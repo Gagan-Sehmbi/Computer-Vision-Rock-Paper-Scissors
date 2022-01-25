@@ -29,7 +29,7 @@ def rps_game():
         f.close()
     options = [(lambda x: x[2:-1])(x) for x in lines]
     options
-    for i in range(72): 
+    for i in range(72):
         ret, frame = cap.read()
         resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
         image_np = np.array(resized_frame)
@@ -60,7 +60,7 @@ def rps_game():
                 print(f'Opponent chose {opponent}')
                 print(f'I chose {me}')
                 print('I lost')
-                score = 0,1
+                score = (0,1)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
                 
