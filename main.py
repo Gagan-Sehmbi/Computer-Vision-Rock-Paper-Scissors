@@ -41,6 +41,8 @@ while True:
             print(f'Opponent chose {opponent}')
             print(f'I chose {me}')
             print('I win!')
+        elif me == 'None':
+            print('Not a valid option')
         else:
             print(f'Opponent chose {opponent}')
             print(f'I chose {me}')
