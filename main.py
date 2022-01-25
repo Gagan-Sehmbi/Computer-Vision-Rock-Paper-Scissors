@@ -3,9 +3,23 @@ import cv2
 from keras.models import load_model
 import numpy as np
 import random
-import time
+
 
 # %%
+def rps_game_wrapper(func):
+    def wrapper():
+        me = 0
+        oppo = 0
+        while (me <= 2) and (oppo<=2):
+            score = func()
+            me += score[0]
+            oppo += score[1]
+            print(f'Score so far {me} (me) : {oppo} (Opponent)')
+        print(f'Final score is {me} (You): {oppo} (Opponent)')
+    return wrapper
+
+# %%
+@rps_game_wrapper
 def rps_game():
     model = load_model('rps_model.h5')
     cap = cv2.VideoCapture(0)
@@ -16,7 +30,7 @@ def rps_game():
     options = [(lambda x: x[2:-1])(x) for x in lines]
     options
 
-    for i in range(96): 
+    for i in range(48): 
         ret, frame = cap.read()
         resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
         image_np = np.array(resized_frame)
@@ -24,7 +38,7 @@ def rps_game():
         data[0] = normalized_image
         prediction = model.predict(data)
         cv2.imshow('frame', frame)
-        if i == 95:
+        if i == 47:
             opponent = options[random.randint(0,2)]
             me = options[np.argmax(prediction)]
             if opponent == me:
@@ -54,3 +68,7 @@ def rps_game():
     cv2.destroyAllWindows()
     return score
 
+
+# %%
+rps_game()
+# %%
