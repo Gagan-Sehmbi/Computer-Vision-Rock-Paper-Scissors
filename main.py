@@ -29,16 +29,18 @@ def rps_game():
         f.close()
     options = [(lambda x: x[2:-1])(x) for x in lines]
     options
-
-    for i in range(48): 
+    for i in range(72): 
         ret, frame = cap.read()
         resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
         image_np = np.array(resized_frame)
         normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
         data[0] = normalized_image
         prediction = model.predict(data)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        num = 3-(i+1)//24
+        cv2.putText(frame,f'{num}',(150,150), font, 5,(0,0,0),2,cv2.LINE_AA)
         cv2.imshow('frame', frame)
-        if i == 47:
+        if i == 71:
             opponent = options[random.randint(0,2)]
             me = options[np.argmax(prediction)]
             if opponent == me:
